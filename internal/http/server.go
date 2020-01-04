@@ -3,6 +3,7 @@ package http
 import (
 	"net/http"
 
+	"github.com/OdaDaisuke/stream-go/internal/rtmp"
 	"github.com/labstack/echo"
 )
 
@@ -10,14 +11,21 @@ type HttpServer struct {
 	e *echo.Echo
 }
 
-func NewHttpServer() *HttpServer {
+type PutStream struct {
+	Name string `json:"name" form:"name" query:"name"`
+}
+
+func NewHttpServer(rtmpc *rtmp.RtmpCluster) *HttpServer {
 	e := echo.New()
 	e.GET("/streams", func(c echo.Context) error {
-		// Get channels list
-		return c.String(http.StatusOK, "")
+		return c.String(http.StatusOK, rtmpc.ListStreams())
 	})
 	e.PUT("/streams", func(c echo.Context) error {
-		// Create New channel
+		p := new(PutStream)
+		if err := c.Bind(p); err != nil {
+			return nil
+		}
+		rtmpc.AddStream(p.Name)
 		return c.String(http.StatusOK, "")
 	})
 	return &HttpServer{e}

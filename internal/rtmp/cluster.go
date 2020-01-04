@@ -2,12 +2,13 @@ package rtmp
 
 import (
 	"errors"
+	"fmt"
 )
 
 type IRtmpCluster interface {
 	AddStream(string) *RtmpStream
 	RemoveStream(string) error
-	ListStreams() map[string]*RtmpStream
+	ListStreams() string
 }
 
 type RtmpCluster struct {
@@ -15,15 +16,17 @@ type RtmpCluster struct {
 }
 
 func NewRtmpCluster() *RtmpCluster {
-	return &RtmpCluster{}
+	return &RtmpCluster{
+		streams: make(map[string]*RtmpStream),
+	}
 }
 
 func (r *RtmpCluster) Run() {
 	r.AddStream("default")
 }
 
-func (r *RtmpCluster) ListStreams() map[string]*RtmpStream {
-	return r.streams
+func (r *RtmpCluster) ListStreams() string {
+	return fmt.Sprintf("%s", r.streams)
 }
 
 func (r *RtmpCluster) AddStream(name string) {
@@ -37,7 +40,7 @@ func (r *RtmpCluster) RemoveStream(name string) error {
 		return errors.New("No stream found")
 	}
 
-	r.streams[name] = nil
+	delete(r.streams, name)
 	// TODO: Close connection
 	return nil
 }

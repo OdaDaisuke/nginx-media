@@ -11,11 +11,11 @@ func init() {
 }
 
 func main() {
-	// API server for RTMP streams operation
-	http_server := http.NewHttpServer()
-	http_server.Run()
-
 	// Expose RTMP Sterams
 	rtmp_cluster := rtmp.NewRtmpCluster()
 	rtmp_cluster.Run()
+
+	// API server for RTMP streams operation
+	http_server := http.NewHttpServer(rtmp_cluster)
+	http_server.Run()
 }
