@@ -20,13 +20,10 @@ type RtmpServer struct {
 }
 
 func NewRtmpServer() *RtmpServer {
-	return &RtmpServer{
+	r := &RtmpServer{
 		Server: &rtmp.Server{},
 		l:      &sync.RWMutex{},
 	}
-}
-
-func (r *RtmpServer) Init() {
 	r.Server.HandlePlay = func(conn *rtmp.Conn) {
 		r.l.RLock()
 		ch := r.channels[conn.URL.Path]
@@ -59,9 +56,11 @@ func (r *RtmpServer) Init() {
 		r.l.Unlock()
 		ch.queue.Close()
 	}
+
+	return r
 }
 
-// Start streaming server
-func (r *RtmpServer) Start() {
+// Run streaming server
+func (r *RtmpServer) Run() {
 	r.Server.ListenAndServe()
 }

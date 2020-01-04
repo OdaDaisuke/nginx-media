@@ -1,21 +1,16 @@
-package main
+package http
 
 import (
 	"net/http"
 
-	"github.com/OdaDaisuke/stream-go/internal/rtmp"
 	"github.com/labstack/echo"
-	"github.com/nareix/joy4/format"
 )
 
-func init() {
-	format.RegisterAll()
+type HttpServer struct {
+	e *echo.Echo
 }
 
-func main() {
-	rtmp_server := rtmp.NewRtmpServer()
-	rtmp_server.Init()
-
+func NewHttpServer() *HttpServer {
 	e := echo.New()
 	e.GET("/streams", func(c echo.Context) error {
 		// Get channels list
@@ -25,7 +20,9 @@ func main() {
 		// Create New channel
 		return c.String(http.StatusOK, "")
 	})
-	e.Logger.Fatal(e.Start(":8080"))
+	return &HttpServer{e}
+}
 
-	rtmp_server.Start()
+func (h *HttpServer) Run() {
+	h.e.Logger.Fatal(h.e.Start(":8080"))
 }
