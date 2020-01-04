@@ -12,15 +12,15 @@ type Channel struct {
 	queue *pubsub.Queue
 }
 
-type RtmpServer struct {
+type RtmpStream struct {
 	Server *rtmp.Server
 
 	channels map[string]*Channel
 	l        *sync.RWMutex
 }
 
-func NewRtmpServer() *RtmpServer {
-	r := &RtmpServer{
+func NewRtmpStream() *RtmpStream {
+	r := &RtmpStream{
 		Server: &rtmp.Server{},
 		l:      &sync.RWMutex{},
 	}
@@ -61,6 +61,6 @@ func NewRtmpServer() *RtmpServer {
 }
 
 // Run streaming server
-func (r *RtmpServer) Run() {
+func (r *RtmpStream) Run() {
 	r.Server.ListenAndServe()
 }

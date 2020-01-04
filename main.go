@@ -16,6 +16,6 @@ func main() {
 	http_server.Run()
 
 	// Expose RTMP Sterams
-	rtmp_server := rtmp.NewRtmpServer()
-	rtmp_server.Run()
+	rtmp_cluster := rtmp.NewRtmpCluster()
+	rtmp_cluster.Run()
 }
