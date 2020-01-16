@@ -17,6 +17,7 @@ type PutStream struct {
 
 func NewHttpServer(rtmpc *rtmp.RtmpCluster) *HttpServer {
 	e := echo.New()
+
 	e.GET("/streams", func(c echo.Context) error {
 		return c.String(http.StatusOK, rtmpc.ListStreams())
 	})
@@ -32,5 +33,5 @@ func NewHttpServer(rtmpc *rtmp.RtmpCluster) *HttpServer {
 }
 
 func (h *HttpServer) Run() {
-	h.e.Logger.Fatal(h.e.Start(":8080"))
+	h.e.Logger.Fatal(h.e.Start(":8081"))
 }

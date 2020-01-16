@@ -31,6 +31,7 @@ func (r *RtmpCluster) ListStreams() string {
 
 func (r *RtmpCluster) AddStream(name string) {
 	strm := NewRtmpStream()
+	strm.Run()
 	r.streams[name] = strm
 }
 

@@ -1,4 +1,4 @@
-module github.com/OdaDaisuke/nginx-media
+module github.com/OdaDaisuke/stream-go
 
 go 1.12
 
